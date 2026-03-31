@@ -493,3 +493,85 @@ a{color:inherit;}ul{list-style:none;}input{font:inherit;}
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── RELATIONSHIP MAP — UPGRADED ────────────────────────────── */
+.rel-hint {
+  text-align: center; font-size: 11px; color: var(--muted);
+  padding: 12px; letter-spacing: 0.05em;
+}
+.rel-selected-panel {
+  background: color-mix(in srgb, var(--fc) 8%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--fc) 40%, transparent);
+  border-left: 3px solid var(--fc);
+  padding: 16px 20px; margin-bottom: 16px;
+  display: flex; align-items: flex-start; gap: 12px;
+  animation: fadeInUp 0.15s ease;
+}
+.rel-selected-inner { flex: 1; }
+.rel-selected-name {
+  font-family: var(--font-serif); font-size: 20px; font-weight: 700;
+  color: var(--fc); margin-bottom: 3px;
+}
+.rel-selected-family {
+  font-size: 11px; color: var(--sub); margin-bottom: 12px; letter-spacing: 0.05em;
+}
+.rel-selected-connections {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
+}
+.rel-conn-item {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--card); border: 1px solid var(--border);
+  padding: 4px 10px; font-size: 11px;
+}
+.rel-conn-arrow { color: var(--muted); font-size: 12px; }
+.rel-conn-name {
+  background: none; border: none; cursor: pointer;
+  color: var(--fc); font-family: var(--font-mono); font-size: 11px;
+  font-weight: 600; padding: 0;
+}
+.rel-conn-name:hover { text-decoration: underline; }
+.rel-conn-label { color: var(--muted); font-size: 10px; font-style: italic; }
+.rel-open-btn {
+  background: var(--fc); border: none; cursor: pointer;
+  color: var(--bg); font-family: var(--font-mono); font-size: 12px;
+  font-weight: 700; padding: 7px 14px; letter-spacing: 0.05em;
+  transition: opacity 0.12s;
+}
+.rel-open-btn:hover { opacity: 0.85; }
+.rel-close-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: 16px; padding: 4px; align-self: flex-start;
+  transition: color 0.12s; flex-shrink: 0;
+}
+.rel-close-btn:hover { color: var(--text); }
+
+/* ── MULTIVARIATE VIZ ────────────────────────────────────────── */
+.mv-viz { margin-bottom: 8px; }
+.mv-viz-label {
+  font-size: 10px; color: var(--muted); letter-spacing: 0.12em;
+  font-weight: 700; text-transform: uppercase; margin-bottom: 8px;
+}
+.mv-svg {
+  background: var(--surface); border: 1px solid var(--border);
+  display: block; width: 100%; height: auto;
+}
+.mv-viz-caption {
+  font-size: 11px; color: var(--sub); line-height: 1.6;
+  margin-top: 8px; font-style: italic;
+}
+.mv-legend-row {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px;
+}
+.mv-legend-item {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--sub);
+}
+.mv-legend-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.multivariate-note {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 14px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-size: 12px;
+}

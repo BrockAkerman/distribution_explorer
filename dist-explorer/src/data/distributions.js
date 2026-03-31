@@ -754,13 +754,13 @@ export const DISTRIBUTIONS = [
     supportFn: ({ mu, sigma }) => [0, null],
     pdf: (x, { mu, sigma }) => {
       if (x <= 0) return 0;
-      return Math.exp(-0.5 * Math.pow((Math.log(x) - mu) / sigma), 2) / (x * sigma * Math.sqrt(2 * Math.PI));
+      return Math.exp(-0.5 * Math.pow((Math.log(x) - mu) / sigma, 2)) / (x * sigma * Math.sqrt(2 * Math.PI));
     },
     pdfPoints: ({ mu, sigma }) => {
       const hi = Math.exp(mu + 4 * sigma);
       return Array.from({ length: 200 }, (_, i) => {
         const x = 0.001 + i * hi / 199;
-        const y = Math.exp(-0.5 * Math.pow((Math.log(x) - mu) / sigma), 2) / (x * sigma * Math.sqrt(2 * Math.PI));
+        const y = Math.exp(-0.5 * Math.pow((Math.log(x) - mu) / sigma, 2)) / (x * sigma * Math.sqrt(2 * Math.PI));
         return { x: parseFloat(x.toFixed(3)), y: isFinite(y) ? y : 0 };
       });
     },
@@ -890,11 +890,11 @@ export const DISTRIBUTIONS = [
     support: "x ∈ (−∞, +∞)",
     supportFn: ({ mu, sigma }) => [mu - 4 * sigma, mu + 4 * sigma],
     pdf: (x, { mu, sigma }) =>
-      Math.exp(-0.5 * Math.pow((x - mu) / sigma), 2) / (sigma * Math.sqrt(2 * Math.PI)),
+      Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2)) / (sigma * Math.sqrt(2 * Math.PI)),
     pdfPoints: ({ mu, sigma }) =>
       Array.from({ length: 200 }, (_, i) => {
         const x = mu - 4 * sigma + i * 8 * sigma / 199;
-        return { x: parseFloat(x.toFixed(3)), y: Math.exp(-0.5 * Math.pow((x - mu) / sigma), 2) / (sigma * Math.sqrt(2 * Math.PI)) };
+        return { x: parseFloat(x.toFixed(3)), y: Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2)) / (sigma * Math.sqrt(2 * Math.PI)) };
       }),
     stats: {
       mean:     ({ mu }) => mu,
@@ -1421,6 +1421,7 @@ export const DISTRIBUTIONS = [
   // ══════════════════════════════════════════════════════════
   {
     id: "multivariate_normal",
+    vizType: "mvn_contours",
     name: "Multivariate Normal",
     family: "multivariate",
     type: "multivariate",
@@ -1468,6 +1469,7 @@ export const DISTRIBUTIONS = [
 
   {
     id: "dirichlet",
+    vizType: "dirichlet_simplex",
     name: "Dirichlet",
     family: "multivariate",
     type: "multivariate",
@@ -1916,13 +1918,13 @@ export const DISTRIBUTIONS = [
     supportFn: () => [0, null],
     pdf: (x, { mu, lambda }) => {
       if (x <= 0) return 0;
-      return Math.sqrt(lambda / (2 * Math.PI * Math.pow(x,3))) * Math.expMath.pow((-lambda * (x - mu),2) / (2 * Math.pow(mu,2) * x));
+      return Math.sqrt(lambda / (2 * Math.PI * Math.pow(x, 3))) * Math.exp(-lambda * Math.pow(x - mu, 2) / (2 * Math.pow(mu, 2) * x));
     },
     pdfPoints: ({ mu, lambda }) => {
       const hi = mu + 5 * mu * Math.sqrt(mu / lambda);
       return Array.from({ length: 200 }, (_, i) => {
         const x = 0.001 + i * hi / 199;
-        const y = Math.sqrt(lambda / (2*Math.PI*Math.pow(x,3))) * Math.expMath.pow((-lambda*(x-mu),2)/(2*Math.pow(mu,2)*x));
+        const y = Math.sqrt(lambda / (2*Math.PI*Math.pow(x,3))) * Math.exp(-lambda * Math.pow(x - mu, 2) / (2 * Math.pow(mu, 2) * x));
         return { x: parseFloat(x.toFixed(3)), y: isFinite(y) ? y : 0 };
       });
     },
@@ -2190,13 +2192,13 @@ export const DISTRIBUTIONS = [
       kurtosis: ({ k }) => 6 / Math.round(k),
     },
     formulas: {
-      pdf:  "f(x)=\frac{\lambda^k x^{k-1} e^{-\lambda x}}{(k-1)!},\; x\ge 0,\; k\in\mathbb{Z}^+",
-      mean: "\frac{k}{\lambda}",
-      var:  "\frac{k}{\lambda^2}",
-      skew: "\frac{2}{\sqrt{k}}",
-      mgf:  "\left(\frac{\lambda}{\lambda-t}\right)^k,\; t<\lambda",
-      pgf:  "\text{N/A (continuous)}",
-      cf:   "\left(\frac{\lambda}{\lambda-it}\right)^k",
+      pdf:  "f(x)=\\frac{\\lambda^k x^{k-1} e^{-\\lambda x}}{(k-1)!},\\; x\\ge 0,\\; k\\in\\mathbb{Z}^+",
+      mean: "\\frac{k}{\\lambda}",
+      var:  "\\frac{k}{\\lambda^2}",
+      skew: "\\frac{2}{\\sqrt{k}}",
+      mgf:  "\\left(\\frac{\\lambda}{\\lambda-t}\\right)^k,\\; t<\\lambda",
+      pgf:  "\\text{N/A (continuous)}",
+      cf:   "\\left(\\frac{\\lambda}{\\lambda-it}\\right)^k",
     },
     story: "Wait for k independent events each occurring at rate lambda. The total wait time follows an Erlang(k, lambda) distribution. It is the Gamma distribution restricted to integer shape k. Classic in queueing theory: the Erlang-k distribution models the time to serve k customers.",
     assumptions: [
@@ -2255,13 +2257,13 @@ export const DISTRIBUTIONS = [
       kurtosis: () => 8 * (Math.PI - 3) / Math.pow(Math.PI - 2, 2),
     },
     formulas: {
-      pdf:  "f(x)=\sqrt{\frac{2}{\pi}}\frac{1}{\sigma}e^{-x^2/(2\sigma^2)},\; x\ge 0",
-      mean: "\sigma\sqrt{2/\pi}",
-      var:  "\sigma^2\left(1-\frac{2}{\pi}\right)",
-      skew: "\frac{\sqrt{2}(4-\pi)}{(\pi-2)^{3/2}}\approx 0.995",
-      mgf:  "\text{(in terms of erfc)}",
-      pgf:  "\text{N/A (continuous)}",
-      cf:   "e^{-\sigma^2 t^2/2}\left(1+\text{erfi}\!\left(\frac{\sigma t}{\sqrt{2}}\right)\right)",
+      pdf:  "f(x)=\\sqrt{\\frac{2}{\\pi}}\\frac{1}{\\sigma}e^{-x^2/(2\\sigma^2)},\\; x\\ge 0",
+      mean: "\\sigma\\sqrt{2/\\pi}",
+      var:  "\\sigma^2\\left(1-\\frac{2}{\\pi}\\right)",
+      skew: "\\frac{\\sqrt{2}(4-\\pi)}{(\\pi-2)^{3/2}}\\approx 0.995",
+      mgf:  "\\text{(in terms of erfc)}",
+      pgf:  "\\text{N/A (continuous)}",
+      cf:   "e^{-\\sigma^2 t^2/2}\\left(1+\\text{erfi}\\!\\left(\\frac{\\sigma t}{\\sqrt{2}}\\right)\\right)",
     },
     story: "Take a Normal(0, sigma^2) variable and fold it at zero — keep only the positive side, doubling its density. Popular in modern Bayesian statistics as a weakly informative prior for standard deviations and scale parameters, replacing the once-common Inverse-Gamma prior.",
     assumptions: [
@@ -2322,13 +2324,13 @@ export const DISTRIBUTIONS = [
       kurtosis: () => NaN,
     },
     formulas: {
-      pmf:  "P(X=k)=\sum_{A\subseteq\{1,\ldots,n\},|A|=k}\prod_{i\in A}p_i\prod_{j\notin A}(1-p_j)",
-      mean: "\sum_{i=1}^n p_i",
-      var:  "\sum_{i=1}^n p_i(1-p_i)",
-      skew: "\frac{\sum p_i(1-p_i)(1-2p_i)}{(\sum p_i(1-p_i))^{3/2}}",
-      mgf:  "\prod_{i=1}^n (1-p_i+p_i e^t)",
-      pgf:  "\prod_{i=1}^n (1-p_i+p_i z)",
-      cf:   "\prod_{i=1}^n (1-p_i+p_i e^{it})",
+      pmf:  "P(X=k)=\\sum_{A\\subseteq\\{1,\\ldots,n\\},|A|=k}\\prod_{i\\in A}p_i\\prod_{j\\notin A}(1-p_j)",
+      mean: "\\sum_{i=1}^n p_i",
+      var:  "\\sum_{i=1}^n p_i(1-p_i)",
+      skew: "\\frac{\\sum p_i(1-p_i)(1-2p_i)}{(\\sum p_i(1-p_i))^{3/2}}",
+      mgf:  "\\prod_{i=1}^n (1-p_i+p_i e^t)",
+      pgf:  "\\prod_{i=1}^n (1-p_i+p_i z)",
+      cf:   "\\prod_{i=1}^n (1-p_i+p_i e^{it})",
     },
     story: "A generalisation of the Binomial where each trial has its own success probability p_i. The Binomial is the special case where all p_i are equal. Arises in any scenario with heterogeneous per-item success probabilities — e.g., click rates on different ad creatives, or default probabilities across a heterogeneous loan portfolio.",
     assumptions: [
@@ -2352,6 +2354,7 @@ export const DISTRIBUTIONS = [
 
   {
     id: "multinomial",
+    vizType: "multinomial_bars",
     name: "Multinomial",
     family: "multivariate",
     type: "multivariate",
@@ -2368,13 +2371,13 @@ export const DISTRIBUTIONS = [
       kurtosis: () => "(1−6pᵢ(1−pᵢ))/(npᵢ(1−pᵢ))",
     },
     formulas: {
-      pmf:  "P(X_1=x_1,\ldots,X_k=x_k)=\frac{n!}{x_1!\cdots x_k!}p_1^{x_1}\cdots p_k^{x_k}",
+      pmf:  "P(X_1=x_1,\\ldots,X_k=x_k)=\\frac{n!}{x_1!\\cdots x_k!}p_1^{x_1}\\cdots p_k^{x_k}",
       mean: "np_i",
       var:  "np_i(1-p_i)",
-      skew: "\frac{1-2p_i}{\sqrt{np_i(1-p_i)}}",
-      mgf:  "\left(\sum_{i=1}^k p_i e^{t_i}\right)^n",
-      pgf:  "\left(\sum_{i=1}^k p_i z_i\right)^n",
-      cf:   "\left(\sum_{i=1}^k p_i e^{it_i}\right)^n",
+      skew: "\\frac{1-2p_i}{\\sqrt{np_i(1-p_i)}}",
+      mgf:  "\\left(\\sum_{i=1}^k p_i e^{t_i}\\right)^n",
+      pgf:  "\\left(\\sum_{i=1}^k p_i z_i\\right)^n",
+      cf:   "\\left(\\sum_{i=1}^k p_i e^{it_i}\\right)^n",
     },
     story: "Roll a k-sided die n times and count outcomes in each category. The Binomial is the k=2 special case. The Multinomial is the likelihood for any categorical count data — the foundation of topic modelling (LDA), naive Bayes text classification, and contingency table analysis.",
     assumptions: [
@@ -2437,13 +2440,13 @@ export const DISTRIBUTIONS = [
       kurtosis: () => NaN,
     },
     formulas: {
-      pdf:  "f(x)=\frac{x^{\alpha-1}(1+x)^{-(\alpha+\beta)}}{B(\alpha,\beta)},\; x>0",
-      mean: "\frac{\alpha}{\beta-1}\;(\beta>1)",
-      var:  "\frac{\alpha(\alpha+\beta-1)}{(\beta-1)^2(\beta-2)}\;(\beta>2)",
-      skew: "\frac{2(2\alpha+\beta-1)}{\beta-3}\sqrt{\frac{\beta-2}{\alpha(\alpha+\beta-1)}}\;(\beta>3)",
-      mgf:  "\text{Does not exist in general}",
-      pgf:  "\text{N/A (continuous)}",
-      cf:   "U(\alpha,1-\beta,-it)\frac{\Gamma(\alpha+\beta)}{\Gamma(\beta)}\frac{(-it)^\alpha}{\Gamma(\alpha)}\text{ (Kummer U)}",
+      pdf:  "f(x)=\\frac{x^{\\alpha-1}(1+x)^{-(\\alpha+\\beta)}}{B(\\alpha,\\beta)},\\; x>0",
+      mean: "\\frac{\\alpha}{\\beta-1}\\;(\\beta>1)",
+      var:  "\\frac{\\alpha(\\alpha+\\beta-1)}{(\\beta-1)^2(\\beta-2)}\\;(\\beta>2)",
+      skew: "\\frac{2(2\\alpha+\\beta-1)}{\\beta-3}\\sqrt{\\frac{\\beta-2}{\\alpha(\\alpha+\\beta-1)}}\\;(\\beta>3)",
+      mgf:  "\\text{Does not exist in general}",
+      pgf:  "\\text{N/A (continuous)}",
+      cf:   "U(\\alpha,1-\\beta,-it)\\frac{\\Gamma(\\alpha+\\beta)}{\\Gamma(\\beta)}\\frac{(-it)^\\alpha}{\\Gamma(\\alpha)}\\text{ (Kummer U)}",
     },
     story: "If X ~ Beta(alpha, beta), then X/(1-X) ~ Beta Prime(alpha, beta). Equivalently: ratio of two independent Gamma variables Gamma(alpha,1) / Gamma(beta,1). Also called the inverted beta distribution or beta distribution of the second kind. Used in Bayesian analysis and as the compound F-distribution.",
     assumptions: [

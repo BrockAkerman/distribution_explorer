@@ -4,6 +4,7 @@ import {
   XAxis, YAxis, Tooltip, ResponsiveContainer
 } from 'recharts';
 import { MathBlock } from '../utils/math';
+import MultivariateViz from './MultivariateViz';
 
 export default function DistributionCard({ dist, allDists, onBack, onOpenDist, families }) {
   const defaultParams = useMemo(() => {
@@ -186,11 +187,11 @@ export default function DistributionCard({ dist, allDists, onBack, onOpenDist, f
 
           {isMult && (
             <div className="card-section">
-              <div className="multivariate-note">
-                <span style={{ fontSize: 28 }}>⊞</span>
-                <div>
-                  <div style={{ fontWeight: 700, marginBottom: 4 }}>Multivariate Distribution</div>
-                  <div style={{ fontSize: 12 }}>Interactive curves are not available for multivariate distributions. See the Formulae tab for the full density specification, and the Use Cases tab for applied guidance.</div>
+              {dist.vizType && <MultivariateViz dist={dist} />}
+              <div className="multivariate-note" style={{ marginTop: dist.vizType ? 12 : 0 }}>
+                <span style={{ fontSize: 20 }}>⊞</span>
+                <div style={{ fontSize: 12, color: 'var(--sub)' }}>
+                  Multivariate distribution — interactive sliders not applicable. The visualisation above uses fixed illustrative parameters.
                 </div>
               </div>
             </div>
